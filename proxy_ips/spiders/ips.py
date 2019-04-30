@@ -33,19 +33,15 @@ class IpsSpider(scrapy.Spider):
             http = str(ip) + ":" + str(port)
             ret = self.__check_ip(http=http)
             if ret:
-                self.__create_data(ip=str(ip),port=str(port),http=http)
+                item = ProxyIpsItem()
+                item["http"] = http
+                item["ip"] = str(ip)
+                item["port"] = str(port)
+                item["is_active"] = True
+                item["check_time"] = datetime.now()
 
+                yield item
 
-    def __create_data(self,ip,port,http):
-
-        item = ProxyIpsItem()
-        item["http"] = http
-        item["ip"] = ip
-        item["port"] = port
-        item["is_active"] = "1"
-        item["check_time"] = "1"
-
-        yield item
 
     def __check_ip(self,http):
         """
