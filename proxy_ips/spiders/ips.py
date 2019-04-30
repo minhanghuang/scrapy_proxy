@@ -3,6 +3,7 @@ import scrapy
 import requests
 from proxy_ips.items import ProxyIpsItem
 from datetime import datetime
+from time import sleep
 
 url = "http://2019.ip138.com/ic.asp"
 headers = {
@@ -19,9 +20,10 @@ class IpsSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        for page in range(1, 2):
+        for page in range(2, 5):
             url_next = "https://www.xicidaili.com/nn/{}/".format(page)
             print(url_next)
+            sleep(20) # 休眠20秒,防止封ip
             yield scrapy.Request(url_next, callback=self.parse_response_next)
 
     def parse_response_next(self,response):
