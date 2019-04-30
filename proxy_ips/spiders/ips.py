@@ -21,7 +21,7 @@ class IpsSpider(scrapy.Spider):
     def parse(self, response):
         for page in range(1, 2):
             url_next = "https://www.xicidaili.com/nn/{}/".format(page)
-
+            print(url_next)
             yield scrapy.Request(url_next, callback=self.parse_response_next)
 
     def parse_response_next(self,response):
@@ -32,9 +32,9 @@ class IpsSpider(scrapy.Spider):
             port = tr_line.xpath('td[3]/text()').extract_first()
             http = str(ip) + ":" + str(port)
             ret = self.__check_ip(http=http)
-            # if ret:
-            #     self.__create_data(ip,port,http)
-        return None
+            if ret:
+                self.__create_data(ip=str(ip),port=str(port),http=http)
+
 
     def __create_data(self,ip,port,http):
 
@@ -42,8 +42,8 @@ class IpsSpider(scrapy.Spider):
         item["http"] = http
         item["ip"] = ip
         item["port"] = port
-        item["is_active"] = True
-        item["check_time"] = datetime.now()
+        item["is_active"] = "1"
+        item["check_time"] = "1"
 
         yield item
 
